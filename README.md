@@ -13,7 +13,7 @@ https://github.com/FoundationAgents/MetaGPT
 
 ## PR Title
 
-This resolves the issue of having to retype the AWS credentials every time to use them with the supported models. (#1450)
+feat(bedrock): Temporary AWS credentials via env vars + supported models update (#1450)
 
 ## PR Link
 
