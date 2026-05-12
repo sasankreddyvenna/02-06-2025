@@ -9,11 +9,11 @@ This analysis is centred on the purpose of the repository, dependencies, archite
 
 # Python Repository Comparison
 
-Repository | Main Language | Primary Purpose / Functionality | Key Dependencies | Main Architecture Pattern Used | Target Use Case / Domain |
+| Repository | Main Language | Primary Purpose / Functionality | Key Dependencies | Main Architecture Pattern Used | Target Use Case / Domain |
 |---|---|---|---|---|---|
-MetaGPT — Multi-agent AI system to launch a software company using different AI roles like Product Manager, Architect, Engineer and QA. | FoundationAgents — Python | Python, which is an open-source programming language. | Large Language Model-asmed-ian Model-Driven Software Engineering (AI and LLM-based SWE) | `openai`, `pydantic`, `asyncio`, `aiohttp`, `numpy`, tenacity | Multi-agent modular software engineering, asynchronous workflows execution, event-driven coordination | Autonomous software engineering, AI agent cooperation, workflow automation
-beets (beets) is a command-line music library management system that does things like organizing, renaming, tagging and other music collection management tasks automatically for the user. Adding extra features via plugins | Command-line interface. | Music collection management, metadata tagging, media organization.
-aiokafka is an asynchronous Kafka client for Python that allows you to produce and consume Kafka messages asynchronously via the non-blocking `asyncio` framework, using synchronous helpers for snippet compression (snappy, lz4), and CRC32c checksums (crc32c). |
+| FoundationAgents — MetaGPT | Python | MetaGPT is a multi-agent AI framework designed to simulate a software company using specialized AI agents such as Product Manager, Architect, Engineer, and QA. The framework automates software development workflows using large language models. | `openai`, `pydantic`, `asyncio`, `aiohttp`, `numpy`, `tenacity` | Multi-agent modular architecture, asynchronous workflow execution, event-driven coordination | Autonomous software engineering, AI agent collaboration, workflow automation |
+| beetbox — beets | Python | beets is a command-line music library management system that helps users organize, rename, tag, and manage music collections automatically. It also supports plugins for additional features. | `mutagen`, `musicbrainzngs`, `PyYAML`, `jellyfish`, `unidecode` | Plugin-based modular architecture, command-line driven design | Music collection management, metadata tagging, media organization |
+| aio-libs — aiokafka | Python | aiokafka is an asynchronous Kafka client for Python that supports producing and consuming Kafka messages using asyncio-based non-blocking operations. | `asyncio`, `snappy`, `lz4`, `crc32c` | Asynchronous event-driven architecture, producer-consumer messaging pattern | Distributed systems, event streaming, real-time messaging pipelines |
 
 ---
 
