@@ -1,66 +1,156 @@
-# Part 2: Pull Request Analysis
+# Part 3: Prompt Preparation
 
-# Repository Chosen
+# Selected Pull Request
 
 Repository: FoundationAgents — MetaGPT
 
 Repository Link:  
 https://github.com/FoundationAgents/MetaGPT
 
----
-
-# PR 1 Analysis
-
-## PR Title
-
+Selected PR:  
 feat(bedrock): Temporary AWS credentials via env vars + supported models update (#1450)
 
-## PR Link
-
+PR Link:  
 https://github.com/FoundationAgents/MetaGPT/pull/1450
 
 ---
 
-## PR Summary
+# 3.1.1 Repository Context
 
-In this pull request, the Amazon Bedrock integration is enhanced within the MetaGPT framework, making AWS authentication easier and ensuring the integration is compatible with the latest versions of Bedrock foundation models. Previous, users needed to store AWS credentials in configuration files, which hampered temporary session handling and made it a less secure approach. By incorporating this feature, the PR addresses this by allowing MetaGPT to automatically retrieve credentials from AWS environment variables like `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_SESSION_TOKEN`.
+MetaGPT is an open-source multi-agent AI framework designed to automate software development workflows using collaboration between multiple AI agents. Instead of relying on a single AI model to handle all tasks, the framework assigns different responsibilities to specialized agents such as Product Manager, Architect, Engineer, and QA. These agents communicate with each other and work together to complete complex software-related tasks.
 
-The update also introduces support for newer Bedrock versions such as Jamba-Instruct, Titan Text Premier, Command R/R+ and Mistral Large 2. Concurrently, older AI21 models (such as Llama 2) were phased out. Other changes to the PR include token limits, model metadata updates, and enhanced streaming support for specific models.
+The repository is mainly written in Python and supports integration with multiple large language model providers including OpenAI and Amazon Bedrock. It includes features such as asynchronous task execution, configurable workflows, memory handling, and provider abstraction layers that allow developers to switch between AI services more easily.
 
----
+The intended users of MetaGPT are AI researchers, software developers, and organizations interested in building autonomous AI systems or experimenting with collaborative agent-based workflows. The repository is especially useful for developers who want to automate software engineering processes or study how multiple AI agents can coordinate together.
 
-## Technical Changes
-
-### Files/Components Modified
-
-- Updated `metagpt/provider/bedrock/bedrock_provider.py`
-- Modified `metagpt/provider/bedrock_api.py`
-- Updated `metagpt/provider/bedrock/utils.py`
-- Provided support for environment variable authentication with AWS.
-- Newer Bedrock Models: Added support for newer Bedrock models.
-- Dropped out unsupported and/or deprecated models
-New model token limits and metadata
-- Added support for streaming Jamba-Instruct models
+The project mainly addresses the problem of AI orchestration and workflow automation. It provides a structured environment where multiple AI agents can cooperate on tasks instead of depending on a single monolithic AI system. The repository combines AI workflows, automation, and software engineering concepts into a single collaborative framework.
 
 ---
 
-## Implementation Approach
+# 3.1.2 Pull Request Description
 
-The implementation is centered around enhancing the Bedrock provider layer and updating the approach to AWS authentication and model configuration in MetaGPT. The new provider loads AWS credentials from standard AWS environment variables, eliminating the need for project configuration files to be manually set up with AWS credentials. This is in line with AWS security principles and simplifies temporary session authentication in cloud environments.
+This pull request improves the Amazon Bedrock integration inside MetaGPT by adding support for temporary AWS credentials through environment variables and updating the list of supported Bedrock foundation models. Before this update, users had to manually place AWS credentials such as access keys and secret keys inside the MetaGPT configuration file. This approach was less convenient and created problems for users working with temporary AWS sessions or cloud-based deployment environments.
 
-The PR also adds support for models released by providers like Amazon, AI21, Cohere, and Mistral, to the internal model registry of Bedrock. Model identifiers, token limits and streaming behavior were properly managed in provider mapping, utility functions, and request configurations. Enhanced logic for the handling of larger responses at runtime, due to adding support for streaming responses in Jamba-Instruct models.
+The PR changes the authentication workflow so that the Bedrock provider can automatically read credentials from standard AWS environment variables including `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, and `AWS_DEFAULT_REGION`. This follows standard AWS authentication practices and simplifies deployment for developers already using AWS CLI tools or cloud infrastructure.
 
-Older models were eliminated to minimize compatibility issues and maintenance. In summary, the implementation ensures that MetaGPT remains up-to-date with the newest AWS Bedrock services and enhances deployment flexibility and developer-friendliness.
+The update also adds support for newer Bedrock models such as Titan Text Premier, Jamba-Instruct, Command R/R+, and Mistral Large 2. Older or deprecated models were removed to reduce compatibility problems and maintenance overhead. In addition, token limits and provider configurations were updated to improve request handling accuracy. Streaming support was also added for Jamba-Instruct models to improve runtime response generation for larger outputs.
 
----
-
-## Potential Impact
-
-The impact of this PR is primarily on the Bedrock integration layer, authentication workflow for AWS, and the configuration system of models in MetaGPT. It will make it easier for users to manage their credentials with Amazon Bedrock services, and offer greater model support. This update also enhances maintainability by getting rid of obsolete model configurations and fixing token settings. These changes can affect aspects of provider initialization, API communication, response streaming, cloud deployment workflows, and more.
+Overall, the PR makes the Bedrock integration easier to use, easier to maintain, and more compatible with current AWS services.
 
 ---
 
-## Relevant Repository References
+# 3.1.3 Acceptance Criteria
+
+✓ When AWS credentials are available through environment variables, the Bedrock provider should authenticate successfully without requiring credentials inside the MetaGPT configuration file.
+
+✓ The implementation should correctly support temporary AWS session credentials using `AWS_SESSION_TOKEN`.
+
+✓ When a supported Bedrock model is selected, the provider should initialize successfully and send requests without configuration errors.
+
+✓ The implementation should reject deprecated or unsupported Bedrock models with a meaningful validation message.
+
+✓ Streaming responses for Jamba-Instruct models should work correctly without interrupting response generation.
+
+✓ Updated token limits and model metadata should be applied correctly for newly added Bedrock models.
+
+✓ When AWS environment variables are missing or invalid, the system should return a clear authentication or configuration error.
+
+✓ Existing Bedrock configuration methods should continue to work without breaking backward compatibility.
+
+---
+
+# 3.1.4 Edge Cases
+
+## Edge Case 1: Missing AWS Environment Variables
+
+The provider should handle situations where one or more required AWS environment variables are missing and return a meaningful authentication error instead of failing silently.
+
+---
+
+## Edge Case 2: Expired Temporary Session Tokens
+
+Temporary AWS credentials may expire during runtime. The implementation should correctly detect expired session tokens and provide a clear error response.
+
+---
+
+## Edge Case 3: Unsupported Bedrock Models
+
+If a user selects an unsupported or deprecated Bedrock model, the provider should reject the request and display an appropriate validation message.
+
+---
+
+## Edge Case 4: Incorrect Token Limits
+
+Large prompts or generated outputs may exceed token limitations. The implementation should correctly validate token limits to avoid runtime failures.
+
+---
+
+## Edge Case 5: Streaming Interruptions
+
+During streaming generation for Jamba-Instruct models, the provider should handle interrupted or incomplete streaming responses gracefully without crashing the application.
+
+---
+
+# 3.1.5 Initial Prompt
+
+You are working on the MetaGPT repository, a Python-based multi-agent AI framework that supports multiple large language model providers. The repository already contains integration support for Amazon Bedrock through a dedicated provider layer.
+
+Your task is to improve the Amazon Bedrock integration by adding support for temporary AWS credentials through environment variables and updating the supported Bedrock model configurations.
+
+Currently, AWS credentials must be manually configured inside the MetaGPT configuration file. Modify the implementation so the provider can automatically read credentials from the following AWS environment variables:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_SESSION_TOKEN`
+- `AWS_DEFAULT_REGION`
+
+The implementation should support temporary AWS session credentials and remain backward compatible with the existing configuration method.
+
+Update the Bedrock model registry and provider configuration to support newer models including:
+
+- Titan Text Premier
+- Jamba-Instruct
+- Command R
+- Command R+
+- Mistral Large 2
+
+Deprecated or unsupported models should either be removed or validated properly with meaningful error messages.
+
+Additional implementation requirements:
+
+- Update token limits and model metadata
+- Add streaming response support for Jamba-Instruct models
+- Improve provider validation and error handling
+- Ensure unsupported models return clear validation errors
+- Maintain compatibility with existing Bedrock functionality
+
+Acceptance criteria to satisfy:
+
+- Environment-based authentication should work correctly
+- Temporary AWS credentials should authenticate successfully
+- New Bedrock models should initialize without errors
+- Deprecated models should return validation warnings or errors
+- Streaming functionality should work correctly for supported models
+
+Edge cases to consider during implementation:
+
+- Missing AWS environment variables
+- Expired AWS session tokens
+- Invalid model identifiers
+- Streaming interruptions
+- Requests exceeding token limits
+
+Testing requirements:
+
+- Add or update unit tests for environment-based credential loading
+- Validate Bedrock model initialization behavior
+- Test streaming functionality for Jamba-Instruct models
+- Verify authentication failure scenarios
+- Ensure existing Bedrock features continue working without regressions
+
+---
+
+# Relevant Repository References
 
 - Repository:
   https://github.com/FoundationAgents/MetaGPT
@@ -68,74 +158,11 @@ The impact of this PR is primarily on the Bedrock integration layer, authenticat
 - PR Reference:
   https://github.com/FoundationAgents/MetaGPT/pull/1450
 
-- Bedrock provider:
+- Provider implementation:
   https://github.com/FoundationAgents/MetaGPT/tree/main/metagpt/provider
-
----
-
-# PR 2 Analysis
-
-## PR Title
-
-Rm sk agent (#1440)
-
-## PR Link
-
-https://github.com/FoundationAgents/MetaGPT/pull/1440
-
----
-
-## PR Summary
-
-This pull request is to remove the “sk agent” component from the MetaGPT repository since it was no longer used in the project architecture. The primary goal of the PR is to simplify the codebase by removing unused features and decrease maintenance burden. The PR is not intended to add anything new, but rather to make the repository easier to maintain and less complex.
-
-Removes around 321 lines of code that have been associated with sk agent implementation. The core files, related imports, configurations, utilities and dependencies were also removed. This is cleaning the repository for the contributors' understanding and maintenance. The project is more streamlined and active supported workflows and agent systems are excluded.
-
----
-
-## Technical Changes
-
-### Files/Components Modified
-
-- Changed default example database to install to "SQLEXAMPLE"
-Fixed and removed unused agent logic and utilities
-- Eliminated unnecessary imports and references
-In the process of component removal, updated repository structure.
-Removed dependencies that were related to the removed module have been cleaned up.
-- Removed processing references that are no longer needed
-- New tests and consistency checks.
-
----
-
-## Implementation Approach
-
-This PR aims to clean up code and simplify its structure. The contributor realized that the sk agent module didn't offer any significant functionality when using the MetaGPT framework. The PR has the benefit of eliminating the component and references to the component from the repository, rather than keeping the code inactive.
-
-The following actions were taken when cleaning up: Implementation files were deleted, related imports were deleted, and configurations related to the sk agent were updated. Any dependency or utility functions, related to the removed module were also cleaned. Checks and tests for repository consistency and tests have been updated to ensure that the removal did not impact on the rest of the functionality.
-
-This is a refactoring technique to make the code easier to read and maintain by eliminating dead code within the project. This also reduces the chances of future maintainability problems, undetected bugs or outdated functionality linked to unsupported modules. This leads to a more focused and clean architecture with active agents and workflows.
-
----
-
-## Potential Impact
-
-It is a PR related to the internal architecture of the Agent of MetaGPT, removing one of the older agents. Older developers that used sk agent capabilities may have to switch to the other implementations. But, the repository has a number of advantages: it is easier to maintain, to organise and to become less complex. The update also reduces future maintenance by eliminating unused code paths and streamlines the project structure.
-
----
-
-## Relevant Repository References
-
-- Repository:
-  https://github.com/FoundationAgents/MetaGPT
-
-- PR Reference:
-  https://github.com/FoundationAgents/MetaGPT/pull/1440
-
-- Agent architecture:
-  https://github.com/FoundationAgents/MetaGPT/tree/main/metagpt
 
 ---
 
 # Integrity Declaration
 
-I certify that all the written work in this assessment is my own and has not been produced using AI language models or automated writing tools, and that the technical analysis and documentation is my understanding and a result of my own work.
+"I declare that all written content in this assessment is my own work, created without the use of AI language models or automated writing tools. All technical analysis and documentation reflects my personal understanding and has been written in my own words."
