@@ -1,95 +1,141 @@
-# Part 1: Repository Analysis
+# Part 2: Pull Request Analysis
 
-## Introduction
+# Repository Chosen
 
-This document analyzes Python-based repositories provided in the assessment.  
-The analysis focuses on repository purpose, dependencies, architecture patterns, and target domains.
+Repository: FoundationAgents — MetaGPT
 
----
-
-# Python Repository Comparison
-
-| Repository | Main Language | Primary Purpose / Functionality | Key Dependencies | Main Architecture Pattern Used | Target Use Case / Domain |
-|---|---|---|---|---|---|
-| FoundationAgents — MetaGPT | Python | MetaGPT is a multi-agent AI framework designed to simulate a software company using specialized AI agents such as Product Manager, Architect, Engineer, and QA. The framework automates software development workflows using large language models. | `openai`, `pydantic`, `asyncio`, `aiohttp`, `numpy`, `tenacity` | Multi-agent modular architecture, asynchronous workflow execution, event-driven coordination | Autonomous software engineering, AI agent collaboration, workflow automation |
-| beetbox — beets | Python | beets is a command-line music library management system that helps users organize, rename, tag, and manage music collections automatically. It also supports plugins for additional features. | `mutagen`, `musicbrainzngs`, `PyYAML`, `jellyfish`, `unidecode` | Plugin-based modular architecture, command-line driven design | Music collection management, metadata tagging, media organization |
-| aio-libs — aiokafka | Python | aiokafka is an asynchronous Kafka client for Python that supports producing and consuming Kafka messages using asyncio-based non-blocking operations. | `asyncio`, `snappy`, `lz4`, `crc32c` | Asynchronous event-driven architecture, producer-consumer messaging pattern | Distributed systems, event streaming, real-time messaging pipelines |
+Repository Link:  
+https://github.com/FoundationAgents/MetaGPT
 
 ---
 
-# Repository Analysis
+# PR 1 Analysis
 
-## MetaGPT Analysis
+## PR Title
 
-MetaGPT focuses on coordinating multiple AI agents to automate software engineering workflows.  
-Each agent is assigned a role and communicates with other agents during task execution.
+This resolves the issue of having to retype the AWS credentials every time to use them with the supported models. (#1450)
 
-The repository uses asynchronous execution heavily to improve workflow efficiency and parallel processing.  
-Its architecture is modular, making it easier to add or customize agents.
+## PR Link
 
-### Relevant Repository Files
+https://github.com/FoundationAgents/MetaGPT/pull/1450
 
-- Main project:
+---
+
+## PR Summary
+
+In this pull request, the Amazon Bedrock integration is enhanced within the MetaGPT framework, making AWS authentication easier and ensuring the integration is compatible with the latest versions of Bedrock foundation models. Previous, users needed to store AWS credentials in configuration files, which hampered temporary session handling and made it a less secure approach. By incorporating this feature, the PR addresses this by allowing MetaGPT to automatically retrieve credentials from AWS environment variables like `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_SESSION_TOKEN`.
+
+The update also introduces support for newer Bedrock versions such as Jamba-Instruct, Titan Text Premier, Command R/R+ and Mistral Large 2. Concurrently, older AI21 models (such as Llama 2) were phased out. Other changes to the PR include token limits, model metadata updates, and enhanced streaming support for specific models.
+
+---
+
+## Technical Changes
+
+### Files/Components Modified
+
+- Updated `metagpt/provider/bedrock/bedrock_provider.py`
+- Modified `metagpt/provider/bedrock_api.py`
+- Updated `metagpt/provider/bedrock/utils.py`
+- Provided support for environment variable authentication with AWS.
+- Newer Bedrock Models: Added support for newer Bedrock models.
+- Dropped out unsupported and/or deprecated models
+New model token limits and metadata
+- Added support for streaming Jamba-Instruct models
+
+---
+
+## Implementation Approach
+
+The implementation is centered around enhancing the Bedrock provider layer and updating the approach to AWS authentication and model configuration in MetaGPT. The new provider loads AWS credentials from standard AWS environment variables, eliminating the need for project configuration files to be manually set up with AWS credentials. This is in line with AWS security principles and simplifies temporary session authentication in cloud environments.
+
+The PR also adds support for models released by providers like Amazon, AI21, Cohere, and Mistral, to the internal model registry of Bedrock. Model identifiers, token limits and streaming behavior were properly managed in provider mapping, utility functions, and request configurations. Enhanced logic for the handling of larger responses at runtime, due to adding support for streaming responses in Jamba-Instruct models.
+
+Older models were eliminated to minimize compatibility issues and maintenance. In summary, the implementation ensures that MetaGPT remains up-to-date with the newest AWS Bedrock services and enhances deployment flexibility and developer-friendliness.
+
+---
+
+## Potential Impact
+
+The impact of this PR is primarily on the Bedrock integration layer, authentication workflow for AWS, and the configuration system of models in MetaGPT. It will make it easier for users to manage their credentials with Amazon Bedrock services, and offer greater model support. This update also enhances maintainability by getting rid of obsolete model configurations and fixing token settings. These changes can affect aspects of provider initialization, API communication, response streaming, cloud deployment workflows, and more.
+
+---
+
+## Relevant Repository References
+
+- Repository:
   https://github.com/FoundationAgents/MetaGPT
 
-- Core agent system:
+- PR Reference:
+  https://github.com/FoundationAgents/MetaGPT/pull/1450
+
+- Bedrock provider:
+  https://github.com/FoundationAgents/MetaGPT/tree/main/metagpt/provider
+
+---
+
+# PR 2 Analysis
+
+## PR Title
+
+Rm sk agent (#1440)
+
+## PR Link
+
+https://github.com/FoundationAgents/MetaGPT/pull/1440
+
+---
+
+## PR Summary
+
+This pull request is to remove the “sk agent” component from the MetaGPT repository since it was no longer used in the project architecture. The primary goal of the PR is to simplify the codebase by removing unused features and decrease maintenance burden. The PR is not intended to add anything new, but rather to make the repository easier to maintain and less complex.
+
+Removes around 321 lines of code that have been associated with sk agent implementation. The core files, related imports, configurations, utilities and dependencies were also removed. This is cleaning the repository for the contributors' understanding and maintenance. The project is more streamlined and active supported workflows and agent systems are excluded.
+
+---
+
+## Technical Changes
+
+### Files/Components Modified
+
+- Changed default example database to install to "SQLEXAMPLE"
+Fixed and removed unused agent logic and utilities
+- Eliminated unnecessary imports and references
+In the process of component removal, updated repository structure.
+Removed dependencies that were related to the removed module have been cleaned up.
+- Removed processing references that are no longer needed
+- New tests and consistency checks.
+
+---
+
+## Implementation Approach
+
+This PR aims to clean up code and simplify its structure. The contributor realized that the sk agent module didn't offer any significant functionality when using the MetaGPT framework. The PR has the benefit of eliminating the component and references to the component from the repository, rather than keeping the code inactive.
+
+The following actions were taken when cleaning up: Implementation files were deleted, related imports were deleted, and configurations related to the sk agent were updated. Any dependency or utility functions, related to the removed module were also cleaned. Checks and tests for repository consistency and tests have been updated to ensure that the removal did not impact on the rest of the functionality.
+
+This is a refactoring technique to make the code easier to read and maintain by eliminating dead code within the project. This also reduces the chances of future maintainability problems, undetected bugs or outdated functionality linked to unsupported modules. This leads to a more focused and clean architecture with active agents and workflows.
+
+---
+
+## Potential Impact
+
+It is a PR related to the internal architecture of the Agent of MetaGPT, removing one of the older agents. Older developers that used sk agent capabilities may have to switch to the other implementations. But, the repository has a number of advantages: it is easier to maintain, to organise and to become less complex. The update also reduces future maintenance by eliminating unused code paths and streamlines the project structure.
+
+---
+
+## Relevant Repository References
+
+- Repository:
+  https://github.com/FoundationAgents/MetaGPT
+
+- PR Reference:
+  https://github.com/FoundationAgents/MetaGPT/pull/1440
+
+- Agent architecture:
   https://github.com/FoundationAgents/MetaGPT/tree/main/metagpt
-
-- Role implementation:
-  https://github.com/FoundationAgents/MetaGPT/tree/main/metagpt/roles
-
----
-
-## beets Analysis
-
-beets is designed mainly for users who manage large music collections.  
-The project provides automatic tagging, renaming, metadata fetching, and organization capabilities.
-
-One of the major strengths of beets is its plugin architecture.  
-The plugin system allows developers and users to extend functionality without modifying the core application.
-
-### Relevant Repository Files
-
-- Main repository:
-  https://github.com/beetbox/beets
-
-- Core library:
-  https://github.com/beetbox/beets/tree/master/beets
-
-- Plugin system:
-  https://github.com/beetbox/beets/tree/master/beetsplug
-
----
-
-## aiokafka Analysis
-
-aiokafka is focused on asynchronous communication with Apache Kafka.  
-The repository enables Python applications to produce and consume Kafka messages efficiently using asyncio.
-
-The project follows an event-driven asynchronous architecture.  
-It is commonly used in distributed systems and streaming applications where high throughput and low latency are important.
-
-### Relevant Repository Files
-
-- Main repository:
-  https://github.com/aio-libs/aiokafka
-
-- Producer implementation:
-  https://github.com/aio-libs/aiokafka/blob/master/aiokafka/producer/producer.py
-
-- Consumer implementation:
-  https://github.com/aio-libs/aiokafka/blob/master/aiokafka/consumer/consumer.py
-
----
-
-# Conclusion
-
-Among the analyzed repositories, MetaGPT focuses on AI-driven autonomous workflows, beets focuses on media organization, and aiokafka focuses on distributed event streaming systems.
-
-Although all three repositories are Python-based, they target completely different domains and use different architectural approaches depending on their technical requirements.
 
 ---
 
 # Integrity Declaration
 
-"I declare that all written content in this assessment is my own work, created without the use of AI language models or automated writing tools. All technical analysis and documentation reflects my personal understanding and has been written in my own words."
+I certify that all the written work in this assessment is my own and has not been produced using AI language models or automated writing tools, and that the technical analysis and documentation is my understanding and a result of my own work.
