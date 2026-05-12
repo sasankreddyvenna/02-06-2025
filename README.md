@@ -10,6 +10,4 @@ To tackle these challenges, I will first review the current Bedrock provider wor
 
 ---
 
-"I declare that this submission reflects my understanding of the repositories, pull requests, and implementation concepts discussed in the assessment."
-
 "I declare that all written content in this assessment is my own work, created without the use of AI language models or automated writing tools. All technical analysis and documentation reflects my personal understanding and has been written in my own words."
