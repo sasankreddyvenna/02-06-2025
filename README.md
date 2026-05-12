@@ -17,96 +17,96 @@ https://github.com/FoundationAgents/MetaGPT/pull/1450
 
 # 3.1.1 Repository Context
 
-MetaGPT is an open-source multi-agent AI framework designed to automate software development workflows using collaboration between multiple AI agents. Instead of relying on a single AI model to handle all tasks, the framework assigns different responsibilities to specialized agents such as Product Manager, Architect, Engineer, and QA. These agents communicate with each other and work together to complete complex software-related tasks.
+MetaGPT is a multi-agent collaboration AI framework that automates software development workflows based on the collaboration of multiple AI agents, which is open source. The framework splits up the roles for different agents, like Product Manager, Architect, Engineer and the QA to work on different tasks, rather than using a single model for all of them. They are interconnected and collaborate to accomplish intricate software-related jobs.
 
-The repository is mainly written in Python and supports integration with multiple large language model providers including OpenAI and Amazon Bedrock. It includes features such as asynchronous task execution, configurable workflows, memory handling, and provider abstraction layers that allow developers to switch between AI services more easily.
+The repository is primarily a Python-based repository and provides integration with various large language model providers such as OpenAI and Amazon Bedrock. It has capabilities like abstraction layers for AI services, asynchronous task execution, memory management and customisable workflows, offering developers greater flexibility in switching between AI services.
 
-The intended users of MetaGPT are AI researchers, software developers, and organizations interested in building autonomous AI systems or experimenting with collaborative agent-based workflows. The repository is especially useful for developers who want to automate software engineering processes or study how multiple AI agents can coordinate together.
+MetaGPT was designed for AI researchers, software developers, and companies looking to create independent AI platforms or explore collaborative agent-based processes. The repository can be particularly helpful for software development professionals seeking to streamline software engineering tasks or exploring the behavior of several AI agents working together.
 
-The project mainly addresses the problem of AI orchestration and workflow automation. It provides a structured environment where multiple AI agents can cooperate on tasks instead of depending on a single monolithic AI system. The repository combines AI workflows, automation, and software engineering concepts into a single collaborative framework.
+The project mainly addresses the problem of AI orchestration and workflow automation. It offers a framework for organizing AI agents to work together to perform tasks, rather than relying on one all-encompassing AI system. AI workflows, automation and software engineering buzzwords are all in one collaborative repository.
 
 ---
 
 # 3.1.2 Pull Request Description
 
-This pull request improves the Amazon Bedrock integration inside MetaGPT by adding support for temporary AWS credentials through environment variables and updating the list of supported Bedrock foundation models. Before this update, users had to manually place AWS credentials such as access keys and secret keys inside the MetaGPT configuration file. This approach was less convenient and created problems for users working with temporary AWS sessions or cloud-based deployment environments.
+MetaGPT integration of Amazon Bedrock by supporting temporary AWS credentials via environment variables and updating the Amazon Bedrock foundation model list. Prior to this update, users needed to manually enter AWS credentials (access key, secret key) into the MetaGPT configuration file. This was less convenient and caused issues with users executing deployments in a temporary AWS session, or a cloud-based deployment environment.
 
-The PR changes the authentication workflow so that the Bedrock provider can automatically read credentials from standard AWS environment variables including `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, and `AWS_DEFAULT_REGION`. This follows standard AWS authentication practices and simplifies deployment for developers already using AWS CLI tools or cloud infrastructure.
+The PR simplifies the process of authenticating by allowing the Bedrock provider to automatically retrieve credentials from common AWS environment variables like `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, and `AWS_DEFAULT_REGION`. It conforms to the AWS authentication paradigm and makes it easier for developers who are familiar with AWS CLI tools/cloud infrastructure.
 
-The update also adds support for newer Bedrock models such as Titan Text Premier, Jamba-Instruct, Command R/R+, and Mistral Large 2. Older or deprecated models were removed to reduce compatibility problems and maintenance overhead. In addition, token limits and provider configurations were updated to improve request handling accuracy. Streaming support was also added for Jamba-Instruct models to improve runtime response generation for larger outputs.
+The upgrade further includes added help for newer Bedrock models like Titan Text Premier, Jamba-Instruct, Command R/R+ and Mistral Large 2. Deprecated or older models are no longer supported to eliminate the issues of compatibility and maintenance. Other changes include enhanced request handling accuracy with updated token limits and provider configurations. Further, support for streaming was introduced in Jamba-Instruct models that helps with runtime response generation for larger outputs.
 
-Overall, the PR makes the Bedrock integration easier to use, easier to maintain, and more compatible with current AWS services.
+In summary, the PR simplifies the Bedrock integration for use, maintenance and integration with existing AWS services.
 
 ---
 
 # 3.1.3 Acceptance Criteria
 
-✓ When AWS credentials are available through environment variables, the Bedrock provider should authenticate successfully without requiring credentials inside the MetaGPT configuration file.
+The Bedrock provider should be able to authenticate when credentials are provided via environment variables, and should not need to have credentials listed inside of the MetaGPT configuration file.
 
-✓ The implementation should correctly support temporary AWS session credentials using `AWS_SESSION_TOKEN`.
+✓ Use of AWS_SESSION_TOKEN to implement temporary AWS session credentials should be correct.
 
-✓ When a supported Bedrock model is selected, the provider should initialize successfully and send requests without configuration errors.
+✓ If a Bedrock model is chosen that is supported by them, the provider should be able to be initialized successfully and request without configuration errors.
 
-✓ The implementation should reject deprecated or unsupported Bedrock models with a meaningful validation message.
+Implementation should reject older or unsupported Bedrock models with something that is describing in a meaningful way why the model is deprecated or unsupported.
 
-✓ Streaming responses for Jamba-Instruct models should work correctly without interrupting response generation.
+Streaming responses to Jamba-Instruct models should be correct and shouldn't disrupt the generation process.
 
-✓ Updated token limits and model metadata should be applied correctly for newly added Bedrock models.
+You're required to use the new token limits and model metadata correctly for models added after the update.
 
-✓ When AWS environment variables are missing or invalid, the system should return a clear authentication or configuration error.
+AWS environment variables should return a clear authentication, or otherwise configuration error, if they are missing or are not valid.
 
-✓ Existing Bedrock configuration methods should continue to work without breaking backward compatibility.
+Existing Bedrock configuration methods should continue to work, not compromising backward compatibility.
 
 ---
 
 # 3.1.4 Edge Cases
 
-## Edge Case 1: Missing AWS Environment Variables
+The first edge case is when the AWS Environment Variables are missing.The first edge case is when the AWS Environment Variables are not available.
 
-The provider should handle situations where one or more required AWS environment variables are missing and return a meaningful authentication error instead of failing silently.
-
----
-
-## Edge Case 2: Expired Temporary Session Tokens
-
-Temporary AWS credentials may expire during runtime. The implementation should correctly detect expired session tokens and provide a clear error response.
+The provider should provide an authentication error if one or more AWS environment variables is absent, but not return no error message if they are not all present.
 
 ---
 
-## Edge Case 3: Unsupported Bedrock Models
+This article goes through steps for handling expired temporary session tokens.
 
-If a user selects an unsupported or deprecated Bedrock model, the provider should reject the request and display an appropriate validation message.
-
----
-
-## Edge Case 4: Incorrect Token Limits
-
-Large prompts or generated outputs may exceed token limitations. The implementation should correctly validate token limits to avoid runtime failures.
+Temporary AWS credentials can expire while running a service. The flow of session expiring should be correctly identified and an appropriate error message should be returned.
 
 ---
 
-## Edge Case 5: Streaming Interruptions
+Models that are not supported by Bedrock cannot be used.Bedrock models cannot be used if they are not supported.
 
-During streaming generation for Jamba-Instruct models, the provider should handle interrupted or incomplete streaming responses gracefully without crashing the application.
+Where there is no standard Bedrock model that the provider supports, or if the provider's support was deprecated, then the user should be notified about the model and reject the submission with an appropriate validation message.
+
+---
+
+In this Edge Case, incorrect limits on tokens are used.Here the token limits are incorrect.
+
+Generated large prompts/ outputs can be limited based on tokens. The implementation should properly check the token limits for valid results without crashing at runtime.
+
+---
+
+Edge Case 5: Streaming Interruptions
+
+If the application is streaming with a Jamba-Instruct model, it should deal with break in and incomplete streaming replies without crashing.
 
 ---
 
 # 3.1.5 Initial Prompt
 
-You are working on the MetaGPT repository, a Python-based multi-agent AI framework that supports multiple large language model providers. The repository already contains integration support for Amazon Bedrock through a dedicated provider layer.
+You are collaborating with the MetaGPT repository, a Python multi-agent AI framework with support for various large language model libraries and services. The repository already has a dedicated provider layer for integration with Amazon Bedrock.
 
-Your task is to improve the Amazon Bedrock integration by adding support for temporary AWS credentials through environment variables and updating the supported Bedrock model configurations.
+Your goals are to enhance the Amazon Bedrock integration and extend supporting Bedrock model configurations with support for temporary AWS credentials via environment variables.
 
-Currently, AWS credentials must be manually configured inside the MetaGPT configuration file. Modify the implementation so the provider can automatically read credentials from the following AWS environment variables:
+At present, AWS credentials have to be hardcoded into the MetaGPT configuration file. Make the implementation compatible with the following AWS environment variables being automatically read from the environment by AWS:
 
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_SESSION_TOKEN`
 - `AWS_DEFAULT_REGION`
 
-The implementation should support temporary AWS session credentials and remain backward compatible with the existing configuration method.
+Implementation should be designed to accept temporary AWS session credentials and should be a backward compatible implementation of the existing configuration method.
 
-Update the Bedrock model registry and provider configuration to support newer models including:
+Add more recent models to the Bedrock model registry/provider configuration:
 
 - Titan Text Premier
 - Jamba-Instruct
@@ -114,39 +114,40 @@ Update the Bedrock model registry and provider configuration to support newer mo
 - Command R+
 - Mistral Large 2
 
-Deprecated or unsupported models should either be removed or validated properly with meaningful error messages.
+Remove deprecated or unsupported models, or validate them in a meaningful way that eliminates results that are not models, with an error message.
 
 Additional implementation requirements:
 
-- Update token limits and model metadata
-- Add streaming response support for Jamba-Instruct models
-- Improve provider validation and error handling
-- Ensure unsupported models return clear validation errors
-- Maintain compatibility with existing Bedrock functionality
+Increase the size of the token limits and the model metadata.
+- Add support for streaming response to Jamba-Instruct models
+Enhance provider validation and error handling.
+- Make sure that unsupported models throw clear validation errors
+- Forward-compatible with the Bedrock theme as it is.
 
 Acceptance criteria to satisfy:
 
-- Environment-based authentication should work correctly
-- Temporary AWS credentials should authenticate successfully
-- New Bedrock models should initialize without errors
-- Deprecated models should return validation warnings or errors
-- Streaming functionality should work correctly for supported models
+Environment based authentication should be accepted as it is all OK.
+- Temporary AWS credentials should be successfully authenticated
+No errors should be thrown when attempting to load the models of New Bedrock.
+Warning or error information is required for deprecation of models
+Supporting models should have streaming rightfully.
 
-Edge cases to consider during implementation:
+Some considerations for the edge cases when implementing:
 
 - Missing AWS environment variables
 - Expired AWS session tokens
 - Invalid model identifiers
 - Streaming interruptions
-- Requests exceeding token limits
+Requests with amount of tokens over the limit.
+
 
 Testing requirements:
 
-- Add or update unit tests for environment-based credential loading
-- Validate Bedrock model initialization behavior
-- Test streaming functionality for Jamba-Instruct models
-- Verify authentication failure scenarios
-- Ensure existing Bedrock features continue working without regressions
+- Create or modify on-unit tests to load credentials.
+- Avoid adding additional checks to the initialisation of Bedrock model.
+- Test streaming capabilities for Jamba-Instruct models
+- Check authentication failure situations
+- Maintain ability to add new Bedrock limitations without bugs impacting prior functionality
 
 ---
 
