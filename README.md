@@ -1,32 +1,92 @@
 # Part 1: Repository Analysis
 
-## Python Repository Comparison
+## Introduction
 
-Repository	Main Language	Primary Purpose / Functionality	Key Dependencies	Main Architecture Pattern Used	Target Use Case / Domain
-FoundationAgents — MetaGPT	Python	Multi-agent AI framework that simulates a software company using AI agents such as Product Manager, Architect, Engineer, and QA. It automates software development workflows using LLMs.	openai, pydantic, asyncio, aiohttp, tenacity, numpy	Multi-agent modular architecture, event-driven workflow, asynchronous task execution	AI agent systems, autonomous software engineering, LLM orchestration, AI automation
-beetbox — beets	Python	Command-line music library manager used to organize, tag, rename, and manage music collections automatically. Supports plugins for extended functionality.	mutagen, musicbrainzngs, jellyfish, PyYAML, unidecode	Plugin-based modular architecture, CLI-driven design	Music library management, media organization, metadata tagging
-aio-libs — aiokafka	Python	Async Kafka client for Python that enables producing and consuming Kafka messages using asyncio-based non-blocking operations.	asyncio, kafka-python protocol utilities, snappy, lz4, crc32c	Asynchronous event-driven architecture, producer-consumer messaging pattern	Distributed systems, real-time streaming, event processing, Kafka-based applications
+This document analyzes Python-based repositories provided in the assessment.  
+The analysis focuses on repository purpose, dependencies, architecture patterns, and target domains.
+
 ---
 
-# Additional Notes for Submission
+# Python Repository Comparison
 
-## MetaGPT
+| Repository | Main Language | Primary Purpose / Functionality | Key Dependencies | Main Architecture Pattern Used | Target Use Case / Domain |
+|---|---|---|---|---|---|
+| FoundationAgents — MetaGPT | Python | MetaGPT is a multi-agent AI framework designed to simulate a software company using specialized AI agents such as Product Manager, Architect, Engineer, and QA. The framework automates software development workflows using large language models. | `openai`, `pydantic`, `asyncio`, `aiohttp`, `numpy`, `tenacity` | Multi-agent modular architecture, asynchronous workflow execution, event-driven coordination | Autonomous software engineering, AI agent collaboration, workflow automation |
+| beetbox — beets | Python | beets is a command-line music library management system that helps users organize, rename, tag, and manage music collections automatically. It also supports plugins for additional features. | `mutagen`, `musicbrainzngs`, `PyYAML`, `jellyfish`, `unidecode` | Plugin-based modular architecture, command-line driven design | Music collection management, metadata tagging, media organization |
+| aio-libs — aiokafka | Python | aiokafka is an asynchronous Kafka client for Python that supports producing and consuming Kafka messages using asyncio-based non-blocking operations. | `asyncio`, `snappy`, `lz4`, `crc32c` | Asynchronous event-driven architecture, producer-consumer messaging pattern | Distributed systems, event streaming, real-time messaging pipelines |
 
-- Focuses heavily on collaboration between AI agents.
-- Uses asynchronous execution for handling multiple workflows efficiently.
-- Commonly used in AI research and autonomous development systems.
+---
 
-## beets
+# Repository Analysis
 
-- Designed mainly for end users managing large music collections.
-- Strong plugin ecosystem makes the project highly extensible.
-- Simple and maintainable modular architecture.
+## MetaGPT Analysis
 
-## aiokafka
+MetaGPT focuses on coordinating multiple AI agents to automate software engineering workflows.  
+Each agent is assigned a role and communicates with other agents during task execution.
 
-- Built for high-performance Kafka communication in async Python applications.
-- Widely used in streaming pipelines and distributed microservices.
-- More infrastructure-focused and technically complex than the other repositories.
+The repository uses asynchronous execution heavily to improve workflow efficiency and parallel processing.  
+Its architecture is modular, making it easier to add or customize agents.
+
+### Relevant Repository Files
+
+- Main project:
+  https://github.com/FoundationAgents/MetaGPT
+
+- Core agent system:
+  https://github.com/FoundationAgents/MetaGPT/tree/main/metagpt
+
+- Role implementation:
+  https://github.com/FoundationAgents/MetaGPT/tree/main/metagpt/roles
+
+---
+
+## beets Analysis
+
+beets is designed mainly for users who manage large music collections.  
+The project provides automatic tagging, renaming, metadata fetching, and organization capabilities.
+
+One of the major strengths of beets is its plugin architecture.  
+The plugin system allows developers and users to extend functionality without modifying the core application.
+
+### Relevant Repository Files
+
+- Main repository:
+  https://github.com/beetbox/beets
+
+- Core library:
+  https://github.com/beetbox/beets/tree/master/beets
+
+- Plugin system:
+  https://github.com/beetbox/beets/tree/master/beetsplug
+
+---
+
+## aiokafka Analysis
+
+aiokafka is focused on asynchronous communication with Apache Kafka.  
+The repository enables Python applications to produce and consume Kafka messages efficiently using asyncio.
+
+The project follows an event-driven asynchronous architecture.  
+It is commonly used in distributed systems and streaming applications where high throughput and low latency are important.
+
+### Relevant Repository Files
+
+- Main repository:
+  https://github.com/aio-libs/aiokafka
+
+- Producer implementation:
+  https://github.com/aio-libs/aiokafka/blob/master/aiokafka/producer/producer.py
+
+- Consumer implementation:
+  https://github.com/aio-libs/aiokafka/blob/master/aiokafka/consumer/consumer.py
+
+---
+
+# Conclusion
+
+Among the analyzed repositories, MetaGPT focuses on AI-driven autonomous workflows, beets focuses on media organization, and aiokafka focuses on distributed event streaming systems.
+
+Although all three repositories are Python-based, they target completely different domains and use different architectural approaches depending on their technical requirements.
 
 ---
 
