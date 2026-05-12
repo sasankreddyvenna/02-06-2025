@@ -2,12 +2,10 @@
 
 ## Python Repository Comparison
 
-| Repository | Main Language | Primary Purpose / Functionality | Key Dependencies | Main Architecture Pattern Used | Target Use Case / Domain |
-|---|---|---|---|---|---|
-| :contentReference[oaicite:0]{index=0} — :contentReference[oaicite:1]{index=1} | Python | Multi-agent AI framework that simulates a software company using AI agents such as Product Manager, Architect, Engineer, and QA. It automates software development workflows using LLMs. | openai, pydantic, asyncio, aiohttp, tenacity, numpy | Multi-agent modular architecture, event-driven workflow, asynchronous task execution | AI agent systems, autonomous software engineering, LLM orchestration, AI automation |
-| :contentReference[oaicite:2]{index=2} — :contentReference[oaicite:3]{index=3} | Python | Command-line music library manager used to organize, tag, rename, and manage music collections automatically. Supports plugins for extended functionality. | mutagen, musicbrainzngs, jellyfish, PyYAML, unidecode | Plugin-based modular architecture, CLI-driven design | Music library management, media organization, metadata tagging |
-| :contentReference[oaicite:4]{index=4} — :contentReference[oaicite:5]{index=5} | Python | Async Kafka client for Python that enables producing and consuming Kafka messages using asyncio-based non-blocking operations. | asyncio, kafka-python protocol utilities, snappy, lz4, crc32c | Asynchronous event-driven architecture, producer-consumer messaging pattern | Distributed systems, real-time streaming, event processing, Kafka-based applications |
-
+Repository	Main Language	Primary Purpose / Functionality	Key Dependencies	Main Architecture Pattern Used	Target Use Case / Domain
+FoundationAgents — MetaGPT	Python	Multi-agent AI framework that simulates a software company using AI agents such as Product Manager, Architect, Engineer, and QA. It automates software development workflows using LLMs.	openai, pydantic, asyncio, aiohttp, tenacity, numpy	Multi-agent modular architecture, event-driven workflow, asynchronous task execution	AI agent systems, autonomous software engineering, LLM orchestration, AI automation
+beetbox — beets	Python	Command-line music library manager used to organize, tag, rename, and manage music collections automatically. Supports plugins for extended functionality.	mutagen, musicbrainzngs, jellyfish, PyYAML, unidecode	Plugin-based modular architecture, CLI-driven design	Music library management, media organization, metadata tagging
+aio-libs — aiokafka	Python	Async Kafka client for Python that enables producing and consuming Kafka messages using asyncio-based non-blocking operations.	asyncio, kafka-python protocol utilities, snappy, lz4, crc32c	Asynchronous event-driven architecture, producer-consumer messaging pattern	Distributed systems, real-time streaming, event processing, Kafka-based applications
 ---
 
 # Additional Notes for Submission
